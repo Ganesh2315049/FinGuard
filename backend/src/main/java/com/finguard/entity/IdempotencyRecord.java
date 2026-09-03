@@ -13,4 +13,5 @@ public class IdempotencyRecord {
     @ManyToOne(optional=false, fetch=FetchType.LAZY) private User user;
     @OneToOne(optional=false) private Transaction transaction;
     @Column(nullable=false, updatable=false) private Instant createdAt=Instant.now();
+    public Transaction getTransaction(){return transaction;} public void setIdempotencyKey(String value){idempotencyKey=value;} public void setUser(User value){user=value;} public void setTransaction(Transaction value){transaction=value;}
 }

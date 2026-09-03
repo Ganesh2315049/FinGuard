@@ -14,4 +14,5 @@ public class AuditLog {
     private UUID entityId;
     private String description;
     @Column(nullable=false, updatable=false) private Instant createdAt=Instant.now();
+    public void setUser(User value){user=value;} public void setAction(String value){action=value;} public void setEntityType(String value){entityType=value;} public void setEntityId(UUID value){entityId=value;} public void setDescription(String value){description=value;}
 }

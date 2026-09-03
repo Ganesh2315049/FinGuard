@@ -21,5 +21,5 @@ public class Transaction {
     private String location;
     @Column(nullable=false, updatable=false) private Instant createdAt=Instant.now();
     private Instant updatedAt=Instant.now();
-    public BigDecimal getAmount(){return amount;} public Instant getCreatedAt(){return createdAt;} public void setUser(User v){user=v;} public void setSourceAccount(Account v){sourceAccount=v;} public void setDestinationAccount(Account v){destinationAccount=v;} public void setType(TransactionType v){type=v;} public void setAmount(BigDecimal v){amount=v;} public void setStatus(TransactionStatus v){status=v;} public void setTransactionReference(String v){transactionReference=v;}
+    public UUID getId(){return id;} public BigDecimal getAmount(){return amount;} public Instant getCreatedAt(){return createdAt;} public TransactionType getType(){return type;} public TransactionStatus getStatus(){return status;} public String getTransactionReference(){return transactionReference;} public void setUser(User v){user=v;} public void setSourceAccount(Account v){sourceAccount=v;} public void setDestinationAccount(Account v){destinationAccount=v;} public void setType(TransactionType v){type=v;} public void setAmount(BigDecimal v){amount=v;} public void setStatus(TransactionStatus v){status=v;} public void setTransactionReference(String v){transactionReference=v;}
 }
