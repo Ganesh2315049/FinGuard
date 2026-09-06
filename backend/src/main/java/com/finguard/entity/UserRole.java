@@ -1,2 +1,2 @@
 package com.finguard.entity;
-public enum UserRole { CUSTOMER, FRAUD_ANALYST, ADMIN }
+public enum UserRole { CUSTOMER, ANALYST, ADMIN }

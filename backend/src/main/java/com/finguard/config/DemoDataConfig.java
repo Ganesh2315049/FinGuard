@@ -18,7 +18,7 @@ public class DemoDataConfig {
         return args -> {
             if (!enabled || password == null || password.length() < 8) return;
             create(users, userService, "Demo Customer", "demo.customer@finguard.local", UserRole.CUSTOMER, password);
-            create(users, userService, "Demo Analyst", "demo.analyst@finguard.local", UserRole.FRAUD_ANALYST, password);
+            create(users, userService, "Demo Analyst", "demo.analyst@finguard.local", UserRole.ANALYST, password);
             create(users, userService, "Demo Admin", "demo.admin@finguard.local", UserRole.ADMIN, password);
         };
     }

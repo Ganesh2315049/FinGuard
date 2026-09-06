@@ -2,8 +2,10 @@ package com.finguard.controller;
 
 import com.finguard.entity.*;
 import com.finguard.repository.*;
+import com.finguard.service.UserService;
 import java.math.BigDecimal;
 import java.util.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +15,10 @@ public class AnalystController {
     private final TransactionRepository transactions;
     private final RiskEvaluationRepository evaluations;
     private final AuditLogRepository auditLogs;
+    private final UserService users;
 
-    public AnalystController(TransactionRepository transactions, RiskEvaluationRepository evaluations, AuditLogRepository auditLogs) {
-        this.transactions = transactions; this.evaluations = evaluations; this.auditLogs = auditLogs;
+    public AnalystController(TransactionRepository transactions, RiskEvaluationRepository evaluations, AuditLogRepository auditLogs, UserService users) {
+        this.transactions = transactions; this.evaluations = evaluations; this.auditLogs = auditLogs; this.users = users;
     }
 
     @GetMapping("/dashboard")
@@ -36,17 +39,17 @@ public class AnalystController {
 
     @PostMapping("/transactions/{id}/approve")
     @Transactional
-    public Map<String, Object> approve(@PathVariable UUID id) { return decide(id, TransactionStatus.APPROVED, "APPROVE"); }
+    public Map<String, Object> approve(@PathVariable UUID id, Authentication authentication) { return decide(id, TransactionStatus.APPROVED, "APPROVE", authentication); }
 
     @PostMapping("/transactions/{id}/reject")
     @Transactional
-    public Map<String, Object> reject(@PathVariable UUID id) { return decide(id, TransactionStatus.REJECTED, "REJECT"); }
+    public Map<String, Object> reject(@PathVariable UUID id, Authentication authentication) { return decide(id, TransactionStatus.REJECTED, "REJECT", authentication); }
 
-    private Map<String, Object> decide(UUID id, TransactionStatus status, String action) {
+    private Map<String, Object> decide(UUID id, TransactionStatus status, String action, Authentication authentication) {
         Transaction transaction = transaction(id);
         if (transaction.getStatus() != TransactionStatus.REVIEW) throw new IllegalArgumentException("Only review transactions can be decided");
         transaction.setStatus(status); transactions.save(transaction);
-        AuditLog log = new AuditLog(); log.setAction(action); log.setEntityType("Transaction"); log.setEntityId(id); log.setDescription(status.name()); auditLogs.save(log);
+        AuditLog log = new AuditLog(); log.setUser(users.byEmail(authentication.getName())); log.setAction(action); log.setEntityType("Transaction"); log.setEntityId(id); log.setDescription(status.name()); auditLogs.save(log);
         return view(transaction);
     }
 
