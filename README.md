@@ -46,7 +46,7 @@ Login returns a signed JWT containing the user id (`uid`), email subject, and ro
 | Role | Access |
 | --- | --- |
 | `CUSTOMER` | Own profile, account, transactions, and risk information |
-| `ANALYST` | Authorized review and risk-analysis endpoints |
+| `FRAUD_ANALYST` | Authorized review and risk-analysis endpoints |
 | `ADMIN` | System management, fraud rules, all transaction and audit views |
 
 Customer transaction queries derive the user from the authenticated principal and use repository ownership predicates. A customer cannot access another customer's transaction by changing an id.
@@ -80,7 +80,7 @@ Default amount signals are `<= 30,000 INR` approved, `30,001-60,000 INR` review,
 4. Install and start the UI: `cd Frontend && npm install && npm run dev`.
 5. Open `http://localhost:5173`.
 
-For a local demo, set `DEMO_SEED=true` and a `DEMO_PASSWORD` with at least eight characters. This creates `demo.customer@finguard.local`, `demo.analyst@finguard.local`, and `demo.admin@finguard.local`. Never enable demo seeding or commit credentials in production.
+For a local demo, set `DEMO_SEED=true` and a `DEMO_PASSWORD` with at least eight characters. This creates `demo.customer@finguard.local`, `demo.analyst@finguard.local`, and `demo.admin@finguard.local`. The development admin login is configured with `DEMO_ADMIN_EMAIL` and `DEMO_ADMIN_PASSWORD` and defaults to `ganeshbavana26@gmail.com` and `Ganesh@123`. These defaults are for local development only; replace them with environment values in any deployed environment.
 
 ## Verification
 

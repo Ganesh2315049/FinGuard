@@ -17,6 +17,16 @@ public class UserService {
         User user=new User(); user.setName(name); user.setEmail(email.trim().toLowerCase()); user.setPassword(encoder.encode(password)); user=users.save(user);
         Account account=new Account(); account.setUser(user); account.setAccountNumber("FG"+System.currentTimeMillis()+String.format("%04d", (int)(Math.random()*10000))); accounts.save(account); return user;
     }
+    @Transactional public User ensureDemoAdmin(String email, String password) {
+        User user = users.findByEmailIgnoreCase(email).orElse(null);
+        if (user == null) {
+            user = register("FinGuard Administrator", email, password);
+        }
+        user.setPassword(encoder.encode(password));
+        user.setRole(UserRole.ADMIN);
+        user.setEnabled(true);
+        return users.save(user);
+    }
     public User byEmail(String email) { return users.findByEmailIgnoreCase(email).orElseThrow(() -> new IllegalArgumentException("Invalid email or password")); }
     public User byId(UUID id) { return users.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found")); }
 }
