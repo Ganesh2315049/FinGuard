@@ -10,4 +10,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
 	List<Transaction> findByStatusOrderByCreatedAtDesc(TransactionStatus status);
 	List<Transaction> findByStatusInOrderByCreatedAtDesc(Collection<TransactionStatus> statuses);
 	long countByStatus(TransactionStatus status);
+	long countByUserIdAndStatus(UUID userId, TransactionStatus status);
 }

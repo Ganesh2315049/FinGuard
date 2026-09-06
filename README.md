@@ -68,7 +68,7 @@ Default amount signals are `<= 30,000 INR` approved, `30,001-60,000 INR` review,
 ## API areas
 
 - `/api/auth/register`, `/api/auth/login`
-- `/api/customer/profile`, `/api/customer/account`, `/api/customer/transactions/**`
+- `/api/customer/profile`, `/api/customer/account`, `/api/customer/risk`, `/api/customer/transactions/**`
 - `/api/admin/dashboard`, `/api/admin/users`, `/api/admin/transactions`, `/api/admin/fraud-rules`, `/api/admin/audit-logs`
 - `/api/analyst/dashboard`, `/api/analyst/suspicious-transactions`, `/api/analyst/transactions/{id}/approve`, `/api/analyst/transactions/{id}/reject`
 
