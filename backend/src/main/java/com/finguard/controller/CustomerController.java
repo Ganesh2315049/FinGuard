@@ -32,9 +32,9 @@ public class CustomerController {
     @GetMapping("/transactions/{id}") public TransactionResponse transaction(Authentication authentication,@PathVariable UUID id) { return TransactionResponse.of(transactions.findByIdAndUserId(id,userId(authentication)).orElseThrow(()->new IllegalArgumentException("Transaction not found"))); }
     private UUID userId(Authentication authentication){return users.byEmail(authentication.getName()).getId();}
     private Account accountFor(Authentication authentication){return accounts.findByUserId(userId(authentication)).orElseThrow(()->new IllegalArgumentException("Account not found"));}
-    public record AmountRequest(@NotNull BigDecimal amount) {}
-    public record TransferRequest(@NotBlank String destinationAccountNumber,@NotNull BigDecimal amount) {}
+    public record AmountRequest(@NotNull BigDecimal amount,String description,String location) {}
+    public record TransferRequest(@NotBlank String destinationAccountNumber,@NotNull BigDecimal amount,String description,String location) {}
     public record UserResponse(UUID id,String name,String email,UserRole role){static UserResponse of(User u){return new UserResponse(u.getId(),u.getName(),u.getEmail(),u.getRole());}}
     public record AccountResponse(UUID id,String accountNumber,BigDecimal balance,String currency){static AccountResponse of(Account a){return new AccountResponse(a.getId(),a.getAccountNumber(),a.getBalance(),a.getCurrency());}}
-    public record TransactionResponse(UUID id,String reference,TransactionType type,TransactionStatus status,BigDecimal amount){static TransactionResponse of(Transaction t){return new TransactionResponse(t.getId(),t.getTransactionReference(),t.getType(),t.getStatus(),t.getAmount());}}
+    public record TransactionResponse(UUID id,String reference,TransactionType type,TransactionStatus status,BigDecimal amount,String description,String location,java.time.Instant createdAt){static TransactionResponse of(Transaction t){return new TransactionResponse(t.getId(),t.getTransactionReference(),t.getType(),t.getStatus(),t.getAmount(),t.getDescription(),t.getLocation(),t.getCreatedAt());}}
 }

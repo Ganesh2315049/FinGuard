@@ -16,5 +16,5 @@ public class Account {
     @Column(nullable=false) private boolean active=true;
     @Column(nullable=false, updatable=false) private Instant createdAt=Instant.now();
     private Instant updatedAt=Instant.now();
-    public UUID getId(){return id;} public void setUser(User v){user=v;} public User getUser(){return user;} public void setAccountNumber(String v){accountNumber=v;} public String getAccountNumber(){return accountNumber;} public BigDecimal getBalance(){return balance;} public void setBalance(BigDecimal v){balance=v;} public String getCurrency(){return currency;}
+    public UUID getId(){return id;} public void setUser(User v){user=v;} public User getUser(){return user;} public void setAccountNumber(String v){accountNumber=v;} public String getAccountNumber(){return accountNumber;} public BigDecimal getBalance(){return balance;} public void setBalance(BigDecimal v){balance=v;} public String getCurrency(){return currency;} public boolean isActive(){return active;}
 }

@@ -16,5 +16,5 @@ public class User {
     @Column(nullable=false) private boolean enabled=true;
     @Column(nullable=false, updatable=false) private Instant createdAt=Instant.now();
     private Instant updatedAt=Instant.now();
-    public UUID getId(){return id;} public String getName(){return name;} public void setName(String v){name=v;} public String getEmail(){return email;} public void setEmail(String v){email=v;} public String getPassword(){return password;} public void setPassword(String v){password=v;} public UserRole getRole(){return role;} public boolean isEnabled(){return enabled;}
+    public UUID getId(){return id;} public String getName(){return name;} public Instant getCreatedAt(){return createdAt;} public void setName(String v){name=v;} public String getEmail(){return email;} public void setEmail(String v){email=v;} public String getPassword(){return password;} public void setPassword(String v){password=v;} public UserRole getRole(){return role;} public void setRole(UserRole v){role=v;} public boolean isEnabled(){return enabled;}
 }
