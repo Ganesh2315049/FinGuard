@@ -80,7 +80,7 @@ Default amount signals are `<= 30,000 INR` approved, `30,001-60,000 INR` review,
 4. Install and start the UI: `cd Frontend && npm install && npm run dev`.
 5. Open `http://localhost:5173`.
 
-For a local demo, set `DEMO_SEED=true`, `DEMO_PASSWORD`, `DEMO_ADMIN_ENABLED=true`, `DEMO_ADMIN_EMAIL`, and `DEMO_ADMIN_PASSWORD` in the backend environment. The admin password is never stored in frontend code or documentation; it is BCrypt-hashed when the configured admin is seeded. Demo provisioning is disabled by default and must remain disabled in deployed environments unless explicitly managed through a secret store.
+For a local demo, `DEMO_ACCOUNTS_ENABLED=true` provisions the fixed development identities `2315049@nec.edu.in` as `ADMIN` and `ganeshbavana26@gmail.com` as `FRAUD_ANALYST`. Their passwords are read from backend environment variables, BCrypt-hashed, and never sent to the frontend. Set `DEMO_ADMIN_PASSWORD` and `DEMO_ANALYST_PASSWORD` through a local secret/environment configuration. Set `DEMO_ACCOUNTS_ENABLED=false` in deployed environments unless demo access is explicitly required.
 
 The configured role flow is:
 
