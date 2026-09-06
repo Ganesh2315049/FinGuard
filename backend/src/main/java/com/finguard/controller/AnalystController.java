@@ -43,7 +43,7 @@ public class AnalystController {
 
     @PostMapping("/transactions/{id}/reject")
     @Transactional
-    public Map<String, Object> reject(@PathVariable UUID id, Authentication authentication) { return decide(id, TransactionStatus.REJECTED, "REJECT", authentication); }
+    public Map<String, Object> reject(@PathVariable UUID id, Authentication authentication) { return decide(id, TransactionStatus.BLOCKED, "BLOCK", authentication); }
 
     private Map<String, Object> decide(UUID id, TransactionStatus status, String action, Authentication authentication) {
         Transaction transaction = transaction(id);

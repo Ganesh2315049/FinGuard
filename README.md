@@ -80,7 +80,7 @@ Default amount signals are `<= 30,000 INR` approved, `30,001-60,000 INR` review,
 4. Install and start the UI: `cd Frontend && npm install && npm run dev`.
 5. Open `http://localhost:5173`.
 
-For a local demo, set `DEMO_SEED=true` and a `DEMO_PASSWORD` with at least eight characters. This creates `demo.customer@finguard.local`, `demo.analyst@finguard.local`, and `demo.admin@finguard.local`. The development admin login is configured with `DEMO_ADMIN_EMAIL` and `DEMO_ADMIN_PASSWORD` and defaults to `ganeshbavana26@gmail.com` and `Ganesh@123`. These defaults are for local development only; replace them with environment values in any deployed environment.
+For a local demo, set `DEMO_SEED=true`, a `DEMO_PASSWORD` with at least eight characters, and `DEMO_ADMIN_ENABLED=true`. This creates the seeded customer and analyst accounts and enables the development admin login configured with `DEMO_ADMIN_EMAIL` and `DEMO_ADMIN_PASSWORD` (defaults: `ganeshbavana26@gmail.com` and `Ganesh@123`). Demo authentication is disabled by default and must be replaced with environment-managed credentials in any deployed environment.
 
 ## Verification
 
@@ -93,3 +93,43 @@ npm run build
 ```
 
 Swagger is available at `http://localhost:8080/swagger-ui.html` while the API is running. Test each role by logging in with the seeded account, checking its dashboard, and manually entering another role's URL; the protected route and Spring Security API should deny access.
+
+## Frontend routes
+
+| Route | Role | Purpose |
+| --- | --- | --- |
+| `/login`, `/register` | Public | Authentication entry points |
+| `/customer/dashboard` | Customer | Personal account and activity overview |
+| `/customer/transactions` | Customer | Deposit, withdrawal, transfer, and history |
+| `/customer/risk` | Customer | Personal risk score and signals |
+| `/customer/account` | Customer | Profile and account details |
+| `/admin/dashboard` | Admin | System-wide control room |
+| `/admin/users` | Admin | User management view |
+| `/admin/transactions` | Admin | System transaction view |
+| `/admin/fraud-monitoring` | Admin | Fraud monitoring view |
+| `/admin/risk-rules` | Admin | Configured fraud rules |
+| `/admin/analytics` | Admin | System analytics |
+| `/analyst/dashboard` | Fraud Analyst | Review operations overview |
+| `/analyst/review`, `/analyst/review-queue` | Fraud Analyst | Suspicious transaction queue |
+| `/analyst/alerts`, `/analyst/high-risk` | Fraud Analyst | Flagged activity |
+| `/analyst/history` | Fraud Analyst | Review history view |
+| `/unauthorized` | Authenticated | Access-denied state |
+
+## Security and accessibility
+
+- JWT signature, expiry, user ID, enabled status, and current role are checked by the backend filter.
+- Spring Security protects customer, admin, and fraud analyst API namespaces independently.
+- Customer repositories query by the authenticated user ID, not a client-supplied user ID.
+- Transaction transfers require an idempotency key and account locking.
+- The UI includes semantic labels, keyboard-focus styles, responsive navigation, loading/error/empty states, and `prefers-reduced-motion` support.
+- Vercel SPA rewrites are defined in `Frontend/vercel.json` so nested routes survive browser refreshes.
+
+## Development checklist
+
+1. Enable local demo accounts only through environment variables.
+2. Verify customer login redirects to `/customer/dashboard`.
+3. Verify admin login redirects to `/admin/dashboard`.
+4. Verify fraud analyst login redirects to `/analyst/dashboard`.
+5. Verify each role receives `/unauthorized` for another role's route.
+6. Verify customer transactions create `APPROVED`, `REVIEW`, or `BLOCKED` outcomes.
+7. Verify `mvn test` and `npm run build` before deployment.
