@@ -15,7 +15,7 @@ public class AdminController {
     public AdminController(UserRepository users, AccountRepository accounts, TransactionRepository transactions, FraudRuleRepository rules, AuditLogRepository auditLogs) {
         this.users=users; this.accounts=accounts; this.transactions=transactions; this.rules=rules; this.auditLogs=auditLogs;
     }
-    @GetMapping("/dashboard") public Map<String,Object> dashboard() { return Map.of("totalUsers",users.count(),"totalAccounts",accounts.count(),"totalTransactions",transactions.count(),"blockedTransactions",transactions.countByStatus(TransactionStatus.BLOCKED),"reviewTransactions",transactions.countByStatus(TransactionStatus.REVIEW),"activeFraudRules",rules.findByEnabledTrue().size()); }
+    @GetMapping("/dashboard") public Map<String,Object> dashboard() { return Map.of("totalUsers",users.count(),"totalCustomers",users.countByRole(UserRole.CUSTOMER),"totalAnalysts",users.countByRole(UserRole.FRAUD_ANALYST),"totalAdmins",users.countByRole(UserRole.ADMIN),"totalAccounts",accounts.count(),"totalTransactions",transactions.count(),"approvedTransactions",transactions.countByStatus(TransactionStatus.APPROVED),"reviewTransactions",transactions.countByStatus(TransactionStatus.REVIEW),"blockedTransactions",transactions.countByStatus(TransactionStatus.BLOCKED),"activeFraudRules",rules.findByEnabledTrue().size()); }
     @GetMapping("/statistics") public Map<String,Object> statistics() { return dashboard(); }
     @GetMapping("/users") public List<UserView> userList() { return users.findAll().stream().map(UserView::of).toList(); }
     @GetMapping("/users/{id}") public UserView user(@PathVariable UUID id) { return UserView.of(users.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"))); }

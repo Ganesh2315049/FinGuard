@@ -14,12 +14,18 @@ public class DemoDataConfig {
     @Bean
     CommandLineRunner demoUsers(UserRepository users, UserService userService,
             @Value("${finguard.demo-seed:false}") boolean enabled,
-            @Value("${finguard.demo-password:}") String password) {
+            @Value("${finguard.demo-password:}") String password,
+            @Value("${finguard.demo-admin-enabled:false}") boolean adminEnabled,
+            @Value("${finguard.demo-admin-email:}") String adminEmail,
+            @Value("${finguard.demo-admin-password:}") String adminPassword) {
         return args -> {
-            if (!enabled || password == null || password.length() < 8) return;
-            create(users, userService, "Demo Customer", "demo.customer@finguard.local", UserRole.CUSTOMER, password);
-            create(users, userService, "Demo Analyst", "demo.analyst@finguard.local", UserRole.FRAUD_ANALYST, password);
-            create(users, userService, "Demo Admin", "demo.admin@finguard.local", UserRole.ADMIN, password);
+            if (enabled && password != null && password.length() >= 8) {
+                create(users, userService, "Demo Customer", "demo.customer@finguard.local", UserRole.CUSTOMER, password);
+                create(users, userService, "Demo Analyst", "demo.analyst@finguard.local", UserRole.FRAUD_ANALYST, password);
+            }
+            if (adminEnabled && adminEmail != null && !adminEmail.isBlank() && adminPassword != null && adminPassword.length() >= 8) {
+                userService.ensureDemoAdmin(adminEmail, adminPassword);
+            }
         };
     }
     private void create(UserRepository users, UserService userService, String name, String email, UserRole role, String password) {

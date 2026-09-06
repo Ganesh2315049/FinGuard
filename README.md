@@ -80,15 +80,26 @@ Default amount signals are `<= 30,000 INR` approved, `30,001-60,000 INR` review,
 4. Install and start the UI: `cd Frontend && npm install && npm run dev`.
 5. Open `http://localhost:5173`.
 
-For a local demo, set `DEMO_SEED=true`, a `DEMO_PASSWORD` with at least eight characters, and `DEMO_ADMIN_ENABLED=true`. This creates the seeded customer and analyst accounts and enables the development admin login configured with `DEMO_ADMIN_EMAIL` and `DEMO_ADMIN_PASSWORD` (defaults: `ganeshbavana26@gmail.com` and `Ganesh@123`). Demo authentication is disabled by default and must be replaced with environment-managed credentials in any deployed environment.
+For a local demo, set `DEMO_SEED=true`, `DEMO_PASSWORD`, `DEMO_ADMIN_ENABLED=true`, `DEMO_ADMIN_EMAIL`, and `DEMO_ADMIN_PASSWORD` in the backend environment. The admin password is never stored in frontend code or documentation; it is BCrypt-hashed when the configured admin is seeded. Demo provisioning is disabled by default and must remain disabled in deployed environments unless explicitly managed through a secret store.
+
+The configured role flow is:
+
+```text
+FinGuard -> Authentication -> Detect role
+        CUSTOMER      -> /customer/dashboard -> transactions, risk, account
+        ADMIN         -> /admin/dashboard    -> users, transactions, fraud controls, analytics
+        FRAUD_ANALYST -> /analyst/dashboard  -> review, alerts, history, investigations
+```
 
 ## Verification
 
 ```text
 cd FinGuard/backend
+mvn clean package -DskipTests
 mvn test
 
 cd ../Frontend
+npm install
 npm run build
 ```
 
